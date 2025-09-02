@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
-	final void Function(String email, String password) onRegister;
+	final Function(String email, String password) onRegister;
 
 	const SignupScreen({super.key, required this.onRegister});
 
@@ -11,6 +11,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
 	final _formKey = GlobalKey<FormState>();
+
 	String _email = '';
 	String _password = '';
 	String _confirmPassword = '';
@@ -22,102 +23,122 @@ class _SignupScreenState extends State<SignupScreen> {
 
 		if (_password != _confirmPassword) {
 			setState(() {
-				_errorMessage = 'Password and Confirm Password do not match.';
+				_errorMessage = "Passwords do not match";
 			});
 			return;
 		}
 
 		widget.onRegister(_email, _password);
-	}
-
-	Widget _buildInputField(String hint, bool obscureText, Function(String?) onSaved) {
-		return Container(
-			margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-			decoration: BoxDecoration(
-				color: const Color(0xFFF4F2EF),
-				borderRadius: BorderRadius.circular(12),
-			),
-			padding: const EdgeInsets.symmetric(horizontal: 16),
-			child: TextFormField(
-				obscureText: obscureText,
-				decoration: InputDecoration(hintText: hint, border: InputBorder.none),
-				onSaved: onSaved,
-				validator: (val) => (val == null || val.isEmpty) ? 'Required' : null,
-			),
-		);
-	}
-
-	Widget _socialButton(String text, VoidCallback onTap) {
-		return Container(
-			margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-			width: double.infinity,
-			child: ElevatedButton(
-				onPressed: onTap,
-				style: ElevatedButton.styleFrom(
-					backgroundColor: const Color(0xFFF4F2EF),
-					foregroundColor: Colors.black87,
-					padding: const EdgeInsets.symmetric(vertical: 12),
-					shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-					elevation: 0,
-				),
-				child: Text(text),
-			),
-		);
+		Navigator.pop(context);
 	}
 
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
-			// No AppBar for a clean look
+			appBar: AppBar(title: const Text('Sign Up')),
 			body: SafeArea(
 				child: SingleChildScrollView(
-					padding: const EdgeInsets.only(top: 24, bottom: 40),
-					child: Column(
-						crossAxisAlignment: CrossAxisAlignment.center,
-						children: [
-							const Text(
-								'Sign Up',
-								style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-							),
-							if (_errorMessage.isNotEmpty)
-								Padding(
-									padding: const EdgeInsets.symmetric(vertical: 12),
-									child: Text(_errorMessage, style: const TextStyle(color: Colors.red)),
+					padding: const EdgeInsets.all(16),
+					child: Form(
+						key: _formKey,
+						child: Column(
+							children: [
+								if (_errorMessage.isNotEmpty)
+									Padding(
+										padding: const EdgeInsets.only(bottom: 12),
+										child: Text(
+											_errorMessage,
+											style: const TextStyle(color: Colors.red),
+										),
+									),
+								TextFormField(
+									decoration: const InputDecoration(
+										labelText: "Email",
+										filled: true,
+										fillColor: Color(0xFFF4F2EF),
+										border: OutlineInputBorder(),
+									),
+									keyboardType: TextInputType.emailAddress,
+									validator: (val) {
+										if (val == null || val.isEmpty) return 'Please enter email';
+										if (!val.contains('@')) return 'Enter valid email';
+										return null;
+									},
+									onSaved: (val) => _email = val!.trim(),
 								),
-							Form(
-								key: _formKey,
-								child: Column(
-									children: [
-										_buildInputField("Email", false, (val) => _email = val ?? ''),
-										_buildInputField("Password", true, (val) => _password = val ?? ''),
-										_buildInputField("Confirm Password", true, (val) => _confirmPassword = val ?? ''),
-									],
+								const SizedBox(height: 16),
+								TextFormField(
+									decoration: const InputDecoration(
+										labelText: "Password",
+										filled: true,
+										fillColor: Color(0xFFF4F2EF),
+										border: OutlineInputBorder(),
+									),
+									obscureText: true,
+									validator: (val) {
+										if (val == null || val.isEmpty) return 'Enter password';
+										if (val.length < 6) return 'Password too short';
+										return null;
+									},
+									onSaved: (val) => _password = val!.trim(),
 								),
-							),
-							const SizedBox(height: 16),
-							_socialButton("Continue with Google", () => debugPrint('Google pressed')),
-							_socialButton("Continue with Facebook", () => debugPrint('Facebook pressed')),
-							Container(
-								margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-								width: double.infinity,
-								child: ElevatedButton(
+								const SizedBox(height: 16),
+								TextFormField(
+									decoration: const InputDecoration(
+										labelText: "Confirm Password",
+										filled: true,
+										fillColor: Color(0xFFF4F2EF),
+										border: OutlineInputBorder(),
+									),
+									obscureText: true,
+									validator: (val) {
+										if (val == null || val.isEmpty) return 'Confirm password';
+										return null;
+									},
+									onSaved: (val) => _confirmPassword = val!.trim(),
+								),
+								const SizedBox(height: 24),
+								ElevatedButton(
 									onPressed: _submit,
 									style: ElevatedButton.styleFrom(
-										padding: const EdgeInsets.symmetric(vertical: 16),
+										minimumSize: const Size.fromHeight(48),
 										backgroundColor: const Color(0xFFED772B),
-										shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
 									),
-									child: const Text("Sign Up", style: TextStyle(fontSize: 16)),
+									child: const Text('Sign Up'),
 								),
-							),
-							TextButton(
-								onPressed: () => Navigator.pop(context),
-								child: const Text('Already have an account? Log In'),
-							),
-						],
+								const SizedBox(height: 24),
+								const Text('Or continue with', style: TextStyle(color: Color(0xFF897060))),
+								const SizedBox(height: 12),
+								Row(
+									mainAxisAlignment: MainAxisAlignment.center,
+									children: [
+										_socialButton('Google', () => debugPrint('Google Sign Up')),
+										const SizedBox(width: 16),
+										_socialButton('Facebook', () => debugPrint('Facebook Sign Up')),
+									],
+								),
+								const SizedBox(height: 24),
+								TextButton(
+									onPressed: () => Navigator.pop(context),
+									child: const Text('Already have an account? Log In'),
+								),
+							],
+						),
 					),
 				),
 			),
+		);
+	}
+
+	Widget _socialButton(String text, VoidCallback onTap) {
+		return OutlinedButton(
+			style: OutlinedButton.styleFrom(
+				backgroundColor: const Color(0xFFF4F2EF),
+				padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+				shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+			),
+			onPressed: onTap,
+			child: Text(text, style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
 		);
 	}
 }

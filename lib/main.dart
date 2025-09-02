@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'screens/depth0_frame0_screen.dart';
-import 'screens/login_screen.dart';
+import 'screens/landing_screen.dart';
 import 'screens/signup_screen.dart';
+import 'screens/showroom_setup.dart';
+import 'screens/depth0_frame0_screen.dart'; // Home screen after login
 
 void main() {
   runApp(const MyApp());
@@ -38,31 +39,42 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Kalkrithi1',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        useMaterial3: true,
-      ),
-      routes: {
-        '/': (context) => _currentUserEmail == null
-            ? LoginScreen(
-          onLogin: (email) => _navigateToHome(email),
-          onNavigateToSignup: () => Navigator.pushNamed(context, '/signup'),
-          loginUser: loginUser,
-        )
-            : Depth0Frame0(onLogout: logout),
-        '/signup': (context) => SignupScreen(
+  void _navigateToSignup(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => SignupScreen(
           onRegister: (email, password) {
             registerUser(email, password);
             Navigator.pop(context);
           },
         ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Kalkrithi1',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.orange),
+      home: Builder(builder: (context) {
+        if (_currentUserEmail == null) {
+          return LandingScreen(
+            loginUser: loginUser,
+            onLogin: _navigateToHome,
+            onNavigateToSignup: () => _navigateToSignup(context),
+          );
+        } else {
+          return Depth0Frame0(
+            onLogout: logout,
+          );
+        }
+      }),
+      routes: {
+        '/showroom': (context) => const ShowroomSetup(),
       },
-      initialRoute: '/',
     );
   }
 }

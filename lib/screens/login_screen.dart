@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../components/header_text.dart';
+import '../components/login_input_field.dart';
+import '../components/social_login_buttons.dart';
+import '../components/primary_button.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function(String email) onLogin;
@@ -18,12 +22,16 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+
   String _email = '';
   String _password = '';
   String _errorMessage = '';
+  late LoginInputFieldState? emailFieldState;
+  late LoginInputFieldState? passwordFieldState;
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
+
     _formKey.currentState!.save();
 
     if (widget.loginUser(_email, _password)) {
@@ -35,94 +43,59 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Widget _buildInputField(String hint, bool obscureText, Function(String?) onSaved) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.05), blurRadius: 6)],
-      ),
-      child: TextFormField(
-        obscureText: obscureText,
-        decoration: InputDecoration(hintText: hint, border: InputBorder.none),
-        onSaved: onSaved,
-        validator: (val) => (val == null || val.isEmpty) ? 'Required' : null,
-      ),
-    );
-  }
-
-  Widget _socialButton(String text, VoidCallback onTap) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ElevatedButton(
-        onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromRGBO(244, 242, 239, 1),
-          foregroundColor: Colors.black87,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          elevation: 0,
-        ),
-        child: Text(text),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 48),
-          child: Column(
-            children: [
-              const Text(
-                'Welcome to Rasik',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'Discover and support authentic artisans',
-                style: TextStyle(fontSize: 16, color: Color(0xFF888888)),
-              ),
-              if (_errorMessage.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text(_errorMessage, style: const TextStyle(color: Colors.red)),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                HeaderText(
+                  title: 'Welcome to Rasik',
+                  subtitle: 'Discover and support authentic artisans',
                 ),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    _buildInputField('Email', false, (val) => _email = val ?? ''),
-                    _buildInputField('Password', true, (val) => _password = val ?? ''),
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                      child: ElevatedButton(
-                        onPressed: _submit,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFED772B),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        ),
-                        child: const Text('Log In', style: TextStyle(fontSize: 16)),
-                      ),
-                    ),
-                  ],
+                if (_errorMessage.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Text(_errorMessage, style: const TextStyle(color: Colors.red)),
+                  ),
+                LoginInputField(
+                  key: UniqueKey(),
+                  label: 'Email',
+                  hintText: 'Enter your email',
+                  isPassword: false,
+                  // Save email value
+                  // Using onChanged or onSaved inside the widget is recommended
+                  // Here assuming you modify the widget to accept onSaved or onChanged callbacks
+                  onChanged: (val) => _email = val ?? '',
                 ),
-              ),
-              const Text('Or continue with', style: TextStyle(color: Color(0xFF897060))),
-              _socialButton('Google', () => debugPrint('Google Login')),
-              _socialButton('Facebook', () => debugPrint('Facebook Login')),
-              TextButton(
-                onPressed: widget.onNavigateToSignup,
-                child: const Text('New User? Sign Up'),
-              ),
-            ],
+                LoginInputField(
+                  key: UniqueKey(),
+                  label: 'Password',
+                  hintText: 'Enter your password',
+                  isPassword: true,
+                  onChanged: (val) => _password = val ?? '',
+                ),
+                PrimaryButton(
+                  text: 'Log In',
+                  onPressed: _submit,
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Or continue with',
+                  style: TextStyle(color: Color(0xFF897060)),
+                ),
+                const SizedBox(height: 12),
+                const SocialLoginButtons(),
+                TextButton(
+                  onPressed: widget.onNavigateToSignup,
+                  child: const Text('New User? Sign Up'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
