@@ -1,29 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'story_generating_page.dart'; // Import your recording UI page
+
 class UploadPage extends StatefulWidget {
 	const UploadPage({super.key});
 	@override
 	State<UploadPage> createState() => _UploadPageState();
 }
+
 class _UploadPageState extends State<UploadPage> {
 	File? _image;
 	final picker = ImagePicker();
 	String productName = '';
 	String artworkDesc = '';
 	String yourPrice = '';
+
 	Future<void> _pickImage() async {
 		final picked = await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
 		if (picked != null) setState(() => _image = File(picked.path));
 	}
+
 	void _onVoiceAssistantTap() {
-		ScaffoldMessenger.of(context).showSnackBar(
-				const SnackBar(content: Text('Voice Assistant tapped')));
+		Navigator.push(
+			context,
+			MaterialPageRoute(builder: (context) => const StoryGeneratingPage()),
+		);
 	}
+
 	void _onUpload() {
 		ScaffoldMessenger.of(context)
 				.showSnackBar(const SnackBar(content: Text('Upload pressed')));
 	}
+
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
@@ -67,7 +77,6 @@ class _UploadPageState extends State<UploadPage> {
 									)
 											: Image.network(
 										'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
-										// Replace with your own placeholder if needed
 										height: 170,
 										width: double.infinity,
 										fit: BoxFit.cover,
