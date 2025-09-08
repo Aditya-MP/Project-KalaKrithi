@@ -10,7 +10,7 @@ class StoryGeneratingPage extends StatefulWidget {
 class _StoryGeneratingPageState extends State<StoryGeneratingPage> {
   bool isRecording = false;
 
-  void toggleRecording() {
+  void _toggleRecording() {
     setState(() {
       isRecording = !isRecording;
     });
@@ -18,135 +18,140 @@ class _StoryGeneratingPageState extends State<StoryGeneratingPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Replace with your actual wave image asset (or keep this free one)
-    const waveImageUrl =
-        'https://storage.googleapis.com/tagjs-prod.appspot.com/v1/9BCNdnhUVz/1abfdkv5_expires_30_days.png';
-
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 30),
-              const Center(
-                child: Text(
-                  "Listening...",
-                  style: TextStyle(
-                    color: Color(0xFF0C141C),
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 20),
-              // Audio Wave Image
-              Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(24),
-                  child: Image.network(
-                    waveImageUrl,
-                    height: 180,
-                    width: 320,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                        height: 180,
-                        width: 320,
-                        color: const Color(0xFFEEEFF2),
-                        alignment: Alignment.center,
-                        child: const Icon(Icons.error_outline,
-                            color: Colors.red, size: 48)),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 26),
-              // Start/Stop Recording Button
-              Center(
-                child: ElevatedButton(
-                  onPressed: toggleRecording,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                    isRecording ? const Color(0xFFE8EDF4) : const Color(0xFFE8EDF4),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 36, vertical: 14),
-                    elevation: 0,
-                  ),
-                  child: Text(
-                    isRecording ? "Stop Recording" : "Start Recording",
-                    style: TextStyle(
-                      color: isRecording
-                          ? const Color(0xFF0C141C)
-                          : const Color(0xFF0C141C),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 34),
-              // Send Button
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SizedBox(
+          padding: EdgeInsets.zero,
+          child: Container(
+            color: const Color(0xFFFFFFFF),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ---- Top Section ----
+                Container(
+                  color: const Color(0xFFF7F9FC),
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Add your send logic
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF3D99F4),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 24),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                        width: double.infinity,
+                        child: const Text(
+                          "Listening...",
+                          style: TextStyle(
+                            color: Color(0xFF0C141C),
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      "Send",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white),
-                    ),
+                      Container(
+                        height: 220,
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: Image.network(
+                            // Use your actual asset or image link here:
+                            "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/9BCNdnhUVz/1abfdkv5_expires_30_days.png",
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: const Color(0xFFE8EDF4),
+                              child: const Center(child: Icon(Icons.mic_rounded, size: 72, color: Color(0xFFB0B6BE))),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 26),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: _toggleRecording,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: const Color(0xFFE8EDF4),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 36),
+                              child: Text(
+                                isRecording ? "Stop Recording" : "Start Recording",
+                                style: const TextStyle(
+                                  color: Color(0xFF0C141C),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              // Cancel Button
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE8EDF4),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                const SizedBox(height: 32),
+                // ---- Buttons Section ----
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          // Your send logic here
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: const Color(0xFF3D99F4),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          width: double.infinity,
+                          child: const Center(
+                            child: Text(
+                              "Send",
+                              style: TextStyle(
+                                color: Color(0xFFF7F9FC),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Color(0xFF0C141C)),
-                    ),
+                      const SizedBox(height: 14),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: const Color(0xFFE8EDF4),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          width: double.infinity,
+                          child: const Center(
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                color: Color(0xFF0C141C),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 30),
-            ],
+              ],
+            ),
           ),
         ),
       ),
