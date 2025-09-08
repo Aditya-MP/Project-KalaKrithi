@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'upload_page.dart'; // Make sure the path is correct
 
 class DigitalPersonalDashboard extends StatelessWidget {
   final String profileName;
@@ -135,8 +136,10 @@ class DigitalPersonalDashboard extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Add New Product clicked")));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const UploadPage()),
+                  );
                 },
                 icon: const Icon(Icons.add),
                 label: const Text("Add New Product"),

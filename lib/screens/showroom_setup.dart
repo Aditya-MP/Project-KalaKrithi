@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'digital_personal_dashboard.dart';
+import 'upload_page.dart'; // Make sure this path matches your file structure!
 
 class ShowroomSetup extends StatefulWidget {
   const ShowroomSetup({super.key});
@@ -21,8 +22,7 @@ class _ShowroomSetupState extends State<ShowroomSetup> {
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickProfileImage() async {
-    final pickedImage =
-    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    final pickedImage = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (pickedImage != null) {
       setState(() {
         _profileImage = pickedImage;
@@ -48,8 +48,8 @@ class _ShowroomSetupState extends State<ShowroomSetup> {
         leading: const BackButton(color: Colors.black),
         title: const Text(
           'Showroom Setup',
-          style:
-          TextStyle(color: Color(0xFF0C0F1C), fontWeight: FontWeight.bold, fontSize: 20),
+          style: TextStyle(
+              color: Color(0xFF0C0F1C), fontWeight: FontWeight.bold, fontSize: 20),
         ),
         centerTitle: true,
       ),
@@ -215,8 +215,10 @@ class _ShowroomSetupState extends State<ShowroomSetup> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Upload feature coming soon!')));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const UploadPage()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.purple,
