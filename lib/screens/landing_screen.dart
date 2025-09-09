@@ -25,18 +25,17 @@ class LandingScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  child: const Text(
-                    "Choose Your Path",
-                    style: TextStyle(
-                      color: Color(0xFF0C141C),
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
+                const SizedBox(height: 20),
+                const Text(
+                  "Choose Your Path",
+                  style: TextStyle(
+                    color: Color(0xFF161411),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
                   ),
+                  textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 20),
 
                 // Kalakaar Section
                 Padding(
@@ -61,16 +60,16 @@ class LandingScreen extends StatelessWidget {
                       const Text(
                         "I am a Kalakaar",
                         style: TextStyle(
-                          color: Color(0xFF0C141C),
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF161411),
                         ),
                       ),
                       const Text(
                         "Artisan - Innovator - Maker",
                         style: TextStyle(
-                          color: Color(0xFF49729B),
                           fontSize: 16,
+                          color: Color(0xFF897060),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -81,23 +80,23 @@ class LandingScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const ShowroomSetup(),
+                                builder: (_) => const ShowroomSetup(),
                               ),
                             );
                           },
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: const Color(0xFF0C7FF2),
+                              color: const Color(0xFF0A74F5),
                             ),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 16),
                             child: const Text(
                               "Start Crafting",
                               style: TextStyle(
-                                color: Color(0xFFF7F9FC),
-                                fontSize: 14,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 14,
                               ),
                             ),
                           ),
@@ -132,16 +131,16 @@ class LandingScreen extends StatelessWidget {
                       const Text(
                         "I am a Rasik",
                         style: TextStyle(
-                          color: Color(0xFF0C141C),
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF161411),
                         ),
                       ),
                       const Text(
                         "Connoisseur - Admirer - Supporter",
                         style: TextStyle(
-                          color: Color(0xFF49729B),
                           fontSize: 16,
+                          color: Color(0xFF897060),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -152,7 +151,7 @@ class LandingScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LoginScreen(
+                                builder: (_) => LoginScreen(
                                   loginUser: loginUser,
                                   onLogin: onLogin,
                                   onNavigateToSignup: onNavigateToSignup,
@@ -163,16 +162,16 @@ class LandingScreen extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: const Color(0xFF0C7FF2),
+                              color: const Color(0xFF0A74F5),
                             ),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 16),
                             child: const Text(
                               "Start Discovering",
                               style: TextStyle(
-                                color: Color(0xFFF7F9FC),
-                                fontSize: 14,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 14,
                               ),
                             ),
                           ),

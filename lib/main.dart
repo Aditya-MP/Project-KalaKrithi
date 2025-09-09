@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/landing_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/showroom_setup.dart';
-import 'screens/depth0_frame0_screen.dart'; // Home screen after login
-import 'screens/login_screen.dart';
+import 'screens/latest_artwork.dart'; // <-- Import your new screen
 
 void main() {
   runApp(const MyApp());
@@ -68,9 +67,8 @@ class _MyAppState extends State<MyApp> {
             onNavigateToSignup: () => _navigateToSignup(context),
           );
         } else {
-          return Depth0Frame0(
-            onLogout: logout,
-          );
+          // SHOW LATEST ARTWORK AFTER LOGIN
+          return LatestArtwork();
         }
       }),
       routes: {
